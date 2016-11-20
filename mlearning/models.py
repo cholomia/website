@@ -25,19 +25,19 @@ class Topic(models.Model):
     title = models.CharField(max_length=250)
     description = models.CharField(max_length=1000)
     objective = models.CharField(max_length=1000)
-    image = models.CharField(max_length=250)
+    image = models.CharField(max_length=250, blank=True)
 
 
 class Lesson(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     sequence = models.IntegerField()
     title = models.CharField(max_length=500)
-    description = models.CharField(max_length=1000)
+    description = models.CharField(max_length=1000, blank=True)
 
 
 class LessonDetail(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     sequence = models.IntegerField()
     body = models.TextField()
-    caption = models.CharField(max_length=1000)
+    caption = models.CharField(max_length=1000, blank=True)
     body_type = models.ForeignKey(BodyType, on_delete=models.CASCADE)
