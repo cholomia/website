@@ -27,12 +27,18 @@ class Topic(models.Model):
     objective = models.CharField(max_length=1000)
     image = models.CharField(max_length=250, blank=True)
 
+    def __str__(self):
+        return self.title + " from " + self.term.title
+
 
 class Lesson(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     sequence = models.IntegerField()
     title = models.CharField(max_length=500)
     description = models.CharField(max_length=1000, blank=True)
+
+    def __str__(self):
+        return self.title
 
 
 class LessonDetail(models.Model):
@@ -41,3 +47,6 @@ class LessonDetail(models.Model):
     body = models.TextField()
     caption = models.CharField(max_length=1000, blank=True)
     body_type = models.ForeignKey(BodyType, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "Lesson Detail #" + self.sequence + " for " + self.lesson.title
