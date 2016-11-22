@@ -49,4 +49,4 @@ class LessonDetail(models.Model):
     body_type = models.ForeignKey(BodyType, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "Lesson Detail #" + self.sequence + " for " + self.lesson.title
+        return "Lesson Detail #" + str(self.sequence) + " for " + self.lesson.title
