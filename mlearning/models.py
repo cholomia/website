@@ -20,7 +20,7 @@ class Term(models.Model):
 
 
 class Topic(models.Model):
-    term = models.ForeignKey(Term, on_delete=models.CASCADE)
+    term = models.ForeignKey(Term, related_name='topics', on_delete=models.CASCADE)
     sequence = models.IntegerField()
     title = models.CharField(max_length=250)
     description = models.CharField(max_length=1000)
@@ -32,7 +32,7 @@ class Topic(models.Model):
 
 
 class Lesson(models.Model):
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, related_name='lessons', on_delete=models.CASCADE)
     sequence = models.IntegerField()
     title = models.CharField(max_length=500)
     description = models.CharField(max_length=1000, blank=True)
@@ -42,11 +42,11 @@ class Lesson(models.Model):
 
 
 class LessonDetail(models.Model):
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, related_name='lessondetails', on_delete=models.CASCADE)
     sequence = models.IntegerField()
     body = models.TextField()
     caption = models.CharField(max_length=1000, blank=True)
-    body_type = models.ForeignKey(BodyType, on_delete=models.CASCADE)
+    body_type = models.ForeignKey(BodyType, related_name='bodytype', on_delete=models.CASCADE)
 
     def __str__(self):
         return "Lesson Detail #" + str(self.sequence) + " for " + self.lesson.title
