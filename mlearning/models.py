@@ -50,3 +50,47 @@ class LessonDetail(models.Model):
 
     def __str__(self):
         return str(self.id) + ": Lesson Detail #" + str(self.sequence) + " for " + self.lesson.title
+
+
+class QuestionType(models.Model):
+    description = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.description
+
+
+class Question(models.Model):
+    topic = models.ForeignKey(Topic, related_name='questions', on_delete=models.CASCADE)
+    question = models.CharField(max_length=1000)
+    answer = models.CharField(max_length=1000)
+    question_type = models.ForeignKey(QuestionType, related_name='questiontype', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "ID# " + str(self.id) + " Question for " + self.topic.title + ": " + self.question
+
+
+class Choice(models.Model):
+    question = models.ForeignKey(Question, related_name='choices', on_delete=models.CASCADE)
+    choice_type = models.ForeignKey(BodyType, related_name='choicetype', on_delete=models.CASCADE)
+    body = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return "ID# " + str(self.id) + " Choice for Question ID# " + str(self.question.id) + ": " + self.body
+
+
+class Assessment(models.Model):
+    question = models.CharField(max_length=1000)
+    answer = models.CharField(max_length=1000)
+    question_type = models.ForeignKey(QuestionType, related_name='assessmenttype', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "ID# " + str(self.id) + ": " + self.question
+
+
+class AssessmentChoice(models.Model):
+    assessment = models.ForeignKey(Assessment, related_name='assessmentchoices', on_delete=models.CASCADE)
+    choice_type = models.ForeignKey(BodyType, related_name='assessmentchoicetype', on_delete=models.CASCADE)
+    body = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return "ID# " + str(self.id) + " Choice for Question ID# " + str(self.assessment.id) + ": " + self.body
