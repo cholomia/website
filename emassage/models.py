@@ -7,7 +7,7 @@ class Course(models.Model):
     description = models.TextField(blank=True)
     objective = models.TextField(blank=True)
     sequence = models.IntegerField()
-    coverImage = models.FileField()
+    coverImage = models.FileField(blank=True, null=True)
 
     def __str__(self):
         return self.title
