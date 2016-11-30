@@ -34,3 +34,11 @@ class Lesson(models.Model):
 
     def __str__(self):
         return str(self.id) + ": " + self.title
+
+
+class MobileId(models.Model):
+    user = models.ForeignKey('auth.User', related_name='tokens', on_delete=models.CASCADE)
+    token = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return self.user.username + " : " + self.token
