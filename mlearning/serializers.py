@@ -9,6 +9,7 @@ from .models import Question
 from .models import Choice
 from .models import Assessment
 from .models import AssessmentChoice
+from .models import Glossary
 
 
 class BodyTypeSerializer(serializers.ModelSerializer):
@@ -79,4 +80,10 @@ class AssessmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Assessment
+        fields = '__all__'
+
+
+class GlossarySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Glossary
         fields = '__all__'

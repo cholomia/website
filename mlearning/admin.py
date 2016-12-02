@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Term, Topic, Lesson, LessonDetail, BodyType, Question, QuestionType, Choice, Assessment, \
-    AssessmentChoice
+    AssessmentChoice, Glossary
 
 # Register your models here.
 admin.site.register(Term)
@@ -13,3 +13,4 @@ admin.site.register(QuestionType)
 admin.site.register(Choice)
 admin.site.register(Assessment)
 admin.site.register(AssessmentChoice)
+admin.site.register(Glossary)
