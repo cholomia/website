@@ -26,9 +26,8 @@ urlpatterns = [
     url(r'^terms/', views.TermList.as_view()),
     url(r'^assessments/', views.AssessmentList.as_view()),
     url(r'^glossary/', views.GlossaryList.as_view()),
+    url(r'^emassage/', include('emassage.urls')),
 ]
-
-urlpatterns = format_suffix_patterns(urlpatterns)
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
