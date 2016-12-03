@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
 from django.http import JsonResponse
-
+import json
 from .models import Course
 from .serializers import CourseSerializer, UserSerializer
 
@@ -35,7 +35,8 @@ class CreateUserView(CreateAPIView):
 class LoginView(APIView):
     def post(self, request):
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
+        serializer = UserSerializer(user, many=False)
         if user is not None:
-            return JsonResponse({'success': True, 'message': "Login Successful"})
+            return JsonResponse({'success': True, 'message': "Login Successful", 'user': serializer.data})
         else:
             return JsonResponse({'success': False, 'message': "Login Failed"})
