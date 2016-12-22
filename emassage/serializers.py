@@ -1,4 +1,4 @@
-from .models import Course, Category, Lesson, Question, Choice
+from .models import Course, Category, Lesson, Question, Choice, Forum, Comment
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
@@ -58,3 +58,20 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = '__all__'
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField(source='user.username')
+
+    class Meta:
+        model = Comment
+        fields = ('id', 'forum', 'username', 'body', 'created', 'updated')
+
+
+class ForumSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField(source='user.username')
+    comment_count = serializers.IntegerField(source='forum_comments.count', read_only=True)
+
+    class Meta:
+        model = Forum
+        fields = ('id', 'username', 'title', 'content', 'created', 'updated', 'comment_count')

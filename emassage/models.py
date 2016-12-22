@@ -59,3 +59,31 @@ class Choice(models.Model):
 
     def __str__(self):
         return str(self.id) + ": Question #" + str(self.question.id) + " " + self.body
+
+
+class Forum(models.Model):
+    title = models.CharField(max_length=250)
+    content = models.TextField()
+    user = models.ForeignKey('auth.User', related_name='forums', on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ('created',)
+
+
+class Comment(models.Model):
+    forum = models.ForeignKey(Forum, related_name='forum_comments', on_delete=models.CASCADE)
+    body = models.TextField()
+    user = models.ForeignKey('auth.User', related_name='user_comments', on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.forum.title + ": " + self.body
+
+    class Meta:
+        ordering = ('created',)

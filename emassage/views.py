@@ -1,13 +1,14 @@
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 from rest_framework import permissions, viewsets
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.contrib.auth import authenticate
-from django.http import JsonResponse
-import json
-from .models import Course
-from .serializers import CourseSerializer, UserSerializer
+from .permissions import IsOwnerOrReadOnly
+
+from .models import Course, Comment, Forum
+from .serializers import CourseSerializer, UserSerializer, CommentSerializer, ForumSerializer
 
 
 # Create your views here.
@@ -40,3 +41,21 @@ class LoginView(APIView):
             return JsonResponse({'success': True, 'message': "Login Successful", 'user': serializer.data})
         else:
             return JsonResponse({'success': False, 'message': "Login Failed"})
+
+
+class ForumViewSet(viewsets.ModelViewSet):
+    queryset = Forum.objects.all()
+    serializer_class = ForumSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

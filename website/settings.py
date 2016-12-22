@@ -124,5 +124,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = '/media/'
 
 REST_FRAMEWORK = {
-    'PAGE_SIZE': 100
+    'PAGE_SIZE': 2
 }
