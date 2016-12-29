@@ -6,9 +6,10 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .permissions import IsOwnerOrReadOnly
-
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import Course, Comment, Forum
 from .serializers import CourseSerializer, UserSerializer, CommentSerializer, ForumSerializer
+import django_filters
 
 
 # Create your views here.
@@ -52,10 +53,22 @@ class ForumViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 
+class CommentFilter(django_filters.rest_framework.FilterSet):
+    forum_id = django_filters.NumberFilter(name="forum__id")
+    username = django_filters.CharFilter(name="user__username")
+
+    class Meta:
+        model = Comment
+        fields = ['forum_id', 'username']
+
+
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = CommentFilter
+    ordering_fields = ('created', 'updated')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

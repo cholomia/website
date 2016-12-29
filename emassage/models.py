@@ -72,7 +72,7 @@ class Forum(models.Model):
         return self.title
 
     class Meta:
-        ordering = ('created',)
+        ordering = ('-created',)
 
 
 class Comment(models.Model):
@@ -86,4 +86,4 @@ class Comment(models.Model):
         return self.forum.title + ": " + self.body
 
     class Meta:
-        ordering = ('created',)
+        ordering = ('-created',)
