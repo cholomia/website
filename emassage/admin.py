@@ -1,5 +1,5 @@
 from django.contrib import admin
-from emassage.models import Course, Category, Lesson, MobileId, Question, Choice, Forum, Comment
+from emassage.models import Course, Category, Lesson, MobileId, Question, Choice, Forum, Comment, Grade
 
 # Register your models here.
 admin.site.register(Course)
@@ -10,3 +10,4 @@ admin.site.register(Question)
 admin.site.register(Choice)
 admin.site.register(Forum)
 admin.site.register(Comment)
+admin.site.register(Grade)
