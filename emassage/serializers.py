@@ -1,4 +1,4 @@
-from .models import Course, Category, Lesson, Question, Choice, Forum, Comment
+from .models import Course, Category, Lesson, Question, Choice, Forum, Comment, Grade
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
@@ -75,3 +75,11 @@ class ForumSerializer(serializers.ModelSerializer):
     class Meta:
         model = Forum
         fields = ('id', 'username', 'title', 'content', 'created', 'updated', 'comment_count')
+
+
+class GradeSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField(source='user.username')
+
+    class Meta:
+        model = Grade
+        fields = ('id', 'lesson', 'raw_score', 'item_count', 'username')

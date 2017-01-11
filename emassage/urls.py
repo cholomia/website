@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from rest_framework.routers import DefaultRouter
 
-from .views import CourseViewSet, CourseList, CreateUserView, LoginView, ForumViewSet, CommentViewSet
+from .views import CourseViewSet, CourseList, CreateUserView, LoginView, ForumViewSet, CommentViewSet, GradeViewSet
 
 app_name = 'emassage'
 
@@ -10,6 +10,7 @@ router = DefaultRouter()
 router.register(r'courses-paginated', CourseViewSet)
 router.register(r'forums', ForumViewSet)
 router.register(r'comments', CommentViewSet)
+router.register(r'grades', GradeViewSet)
 
 urlpatterns = router.urls
 

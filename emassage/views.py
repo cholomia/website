@@ -7,8 +7,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .permissions import IsOwnerOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Course, Comment, Forum
-from .serializers import CourseSerializer, UserSerializer, CommentSerializer, ForumSerializer
+from .models import Course, Comment, Forum, Grade
+from .serializers import CourseSerializer, UserSerializer, CommentSerializer, ForumSerializer, GradeSerializer
 import django_filters
 
 
@@ -69,6 +69,33 @@ class CommentViewSet(viewsets.ModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filter_class = CommentFilter
     ordering_fields = ('created', 'updated')
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class GradeFilter(django_filters.rest_framework.FilterSet):
+    username = django_filters.CharFilter(name="user__username")
+
+    class Meta:
+        model = Grade
+        fields = ['username']
+
+
+class GradeViewSet(viewsets.ModelViewSet):
+    queryset = Grade.objects.all()
+    serializer_class = GradeSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = GradeFilter
+    pagination_class = None
+
+    def get_object(self):
+        if self.request.method == 'PUT':
+            obj, created = Grade.objects.get_or_create(pk=self.kwargs.get('pk'))
+            return obj
+        else:
+            return super(GradeViewSet, self).get_object()
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

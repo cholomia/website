@@ -87,3 +87,10 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ('-created',)
+
+
+class Grade(models.Model):
+    lesson = models.ForeignKey(Lesson, related_name='grades', on_delete=models.CASCADE)
+    raw_score = models.IntegerField()
+    item_count = models.IntegerField()
+    user = models.ForeignKey('auth.User', related_name='user_grades', on_delete=models.CASCADE)
