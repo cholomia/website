@@ -6,7 +6,6 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .permissions import IsOwnerOrReadOnly
-from django_filters.rest_framework import DjangoFilterBackend
 from .models import Course, Comment, Forum, Grade
 from .serializers import CourseSerializer, UserSerializer, CommentSerializer, ForumSerializer, GradeSerializer
 import django_filters
@@ -66,7 +65,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
-    filter_backends = (DjangoFilterBackend,)
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
     filter_class = CommentFilter
     ordering_fields = ('created', 'updated')
 
@@ -86,7 +85,7 @@ class GradeViewSet(viewsets.ModelViewSet):
     queryset = Grade.objects.all()
     serializer_class = GradeSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
-    filter_backends = (DjangoFilterBackend,)
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
     filter_class = GradeFilter
     pagination_class = None
 
