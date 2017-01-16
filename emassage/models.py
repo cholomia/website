@@ -94,3 +94,40 @@ class Grade(models.Model):
     raw_score = models.IntegerField()
     item_count = models.IntegerField()
     user = models.ForeignKey('auth.User', related_name='user_grades', on_delete=models.CASCADE)
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField('auth.User')
+    validation_code = models.CharField(max_length=100)
+    enable = models.BooleanField()
+
+    def __str__(self):
+        return self.user.username
+
+
+class ForumVote(models.Model):
+    id = models.CharField(primary_key=True, max_length=100)
+    forum = models.ForeignKey(Forum, related_name='forum_votes', on_delete=models.CASCADE)
+    user = models.ForeignKey('auth.User', related_name='user_forum_votes', on_delete=models.CASCADE)
+    vote = models.IntegerField()
+
+    def __str__(self):
+        return self.id
+
+
+class CommentVote(models.Model):
+    id = models.CharField(primary_key=True, max_length=100)
+    comment = models.ForeignKey(Comment, related_name='comment_votes', on_delete=models.CASCADE)
+    user = models.ForeignKey('auth.User', related_name='user_comment_votes', on_delete=models.CASCADE)
+    vote = models.IntegerField()
+
+    def __str__(self):
+        return self.id
+
+
+class VideoSimulation(models.Model):
+    youtube_code = models.CharField(max_length=50)
+    title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.title
