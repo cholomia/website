@@ -152,7 +152,7 @@ class GradeSerializer(serializers.ModelSerializer):
 
 
 class ForumVoteSerializer(serializers.ModelSerializer):
-    forum_votes = ForumSerializer(many=False, read_only=True)
+    forum_votes = ForumSerializer(source='forum', read_only=True)
 
     class Meta:
         model = ForumVote
@@ -160,7 +160,7 @@ class ForumVoteSerializer(serializers.ModelSerializer):
 
 
 class CommentVoteSerializer(serializers.ModelSerializer):
-    comment_votes = CommentSerializer(many=False, read_only=True)
+    comment_votes = CommentSerializer(source='comment', read_only=True)
 
     class Meta:
         model = CommentVote
