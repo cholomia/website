@@ -1,11 +1,12 @@
 import datetime
-
+import uuid
 from django.contrib.auth import get_user_model
 from django.db.models import Sum
 from rest_framework import serializers
+from django.core.mail import send_mail
 
 from .models import Course, Category, Lesson, Question, Choice, Forum, Comment, Grade, ForumVote, \
-    CommentVote, VideoSimulation
+    CommentVote, VideoSimulation, UserProfile
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -15,11 +16,24 @@ class UserSerializer(serializers.ModelSerializer):
         user = get_user_model().objects.create(
             username=validated_data['username'],
             first_name=validated_data['first_name'],
-            last_name=validated_data['last_name']
+            last_name=validated_data['last_name'],
+            email=validated_data['email']
         )
         user.set_password(validated_data['password'])
         user.save()
-
+        my_uuid = uuid.uuid4()
+        validation_code = str(my_uuid)
+        user_profile = UserProfile.objects.create(
+            user=user,
+            validation_code=validation_code,
+            enable=False
+        )
+        user_profile.save()
+        send_mail("EMassage Registration Validation",
+                  "Please validate your account using the link: "
+                  + "http://vlitztrom.pythonanywhere.com/emassage/api/user/validation/?username=" + user.username
+                  + "&validation_code=" + validation_code,
+                  "capstone2tip.@gmail.com", [user.email])
         return user
 
     class Meta:

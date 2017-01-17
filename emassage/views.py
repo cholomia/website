@@ -69,6 +69,7 @@ class ValidationView(APIView):
             else:
                 return JsonResponse({'success': False, 'message': "Username does not exist"})
         except Exception as e:
+            print(e)
             return JsonResponse({'success': False, 'message': "Invalid Validation"})
 
 
