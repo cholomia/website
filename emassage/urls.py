@@ -2,7 +2,7 @@ from django.conf.urls import url
 from rest_framework.routers import DefaultRouter
 
 from .views import CourseViewSet, CourseList, CreateUserView, LoginView, ForumViewSet, CommentViewSet, GradeViewSet, \
-    ValidationView, ForumVoteViewSet, CommentVoteViewSet, VideoSimulationViewSet
+    ValidationView, ForumVoteViewSet, CommentVoteViewSet, VideoSimulationViewSet, TwistWordViewSet
 
 app_name = 'emassage'
 
@@ -15,6 +15,7 @@ router.register(r'grades', GradeViewSet)
 router.register(r'forum-vote', ForumVoteViewSet)
 router.register(r'comment-vote', CommentVoteViewSet)
 router.register(r'video-simulations', VideoSimulationViewSet)
+router.register(r'twist-words', TwistWordViewSet)
 
 urlpatterns = router.urls
 

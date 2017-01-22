@@ -90,10 +90,15 @@ class Comment(models.Model):
 
 
 class Grade(models.Model):
+    id = models.CharField(primary_key=True, max_length=100)
     lesson = models.ForeignKey(Lesson, related_name='grades', on_delete=models.CASCADE)
     raw_score = models.IntegerField()
     item_count = models.IntegerField()
     user = models.ForeignKey('auth.User', related_name='user_grades', on_delete=models.CASCADE)
+    try_count = models.IntegerField()
+
+    def __str__(self):
+        return self.id
 
 
 class UserProfile(models.Model):
@@ -131,3 +136,11 @@ class VideoSimulation(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class TwistWord(models.Model):
+    word = models.CharField(max_length=50)
+    clue = models.TextField()
+
+    def __str__(self):
+        return self.word

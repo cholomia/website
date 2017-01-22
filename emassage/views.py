@@ -8,10 +8,10 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Course, Comment, Forum, Grade, UserProfile, ForumVote, CommentVote, VideoSimulation
+from .models import Course, Comment, Forum, Grade, UserProfile, ForumVote, CommentVote, VideoSimulation, TwistWord
 from .permissions import IsOwnerOrReadOnly
 from .serializers import CourseSerializer, UserSerializer, CommentSerializer, ForumSerializer, GradeSerializer, \
-    ForumVoteSerializer, CommentVoteSerializer, VideoSimulationSerializer
+    ForumVoteSerializer, CommentVoteSerializer, VideoSimulationSerializer, TwistWordSerializer
 from rest_framework.filters import OrderingFilter
 
 
@@ -123,7 +123,11 @@ class GradeViewSet(viewsets.ModelViewSet):
 
     def get_object(self):
         if self.request.method == 'PUT':
-            obj, created = Grade.objects.get_or_create(pk=self.kwargs.get('pk'))
+            obj, created = Grade.objects.get_or_create(pk=self.kwargs.get('pk'),
+                                                       defaults={'lesson_id': self.request.data['lesson'],
+                                                                 'user': self.request.user,
+                                                                 'raw_score': self.request.data['raw_score'],
+                                                                 'item_count': self.request.data['item_count']})
             return obj
         else:
             return super(GradeViewSet, self).get_object()
@@ -142,7 +146,8 @@ class ForumVoteViewSet(viewsets.ModelViewSet):
             obj, created = ForumVote.objects.get_or_create(pk=self.kwargs.get('pk'),
                                                            defaults={'forum_id': self.request.data['forum'],
                                                                      'user': self.request.user,
-                                                                     'vote': self.request.data['vote']})
+                                                                     'vote': self.request.data['vote'],
+                                                                     'try_count': self.request.data['try_count']})
             return obj
         else:
             return super(ForumVoteViewSet, self).get_object()
@@ -170,4 +175,10 @@ class CommentVoteViewSet(viewsets.ModelViewSet):
 class VideoSimulationViewSet(viewsets.ModelViewSet):
     queryset = VideoSimulation.objects.all()
     serializer_class = VideoSimulationSerializer
+    pagination_class = None
+
+
+class TwistWordViewSet(viewsets.ModelViewSet):
+    queryset = TwistWord.objects.all()
+    serializer_class = TwistWordSerializer
     pagination_class = None
