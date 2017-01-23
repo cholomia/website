@@ -127,7 +127,8 @@ class GradeViewSet(viewsets.ModelViewSet):
                                                        defaults={'lesson_id': self.request.data['lesson'],
                                                                  'user': self.request.user,
                                                                  'raw_score': self.request.data['raw_score'],
-                                                                 'item_count': self.request.data['item_count']})
+                                                                 'item_count': self.request.data['item_count'],
+                                                                 'try_count': self.request.data['try_count']})
             return obj
         else:
             return super(GradeViewSet, self).get_object()
@@ -146,8 +147,7 @@ class ForumVoteViewSet(viewsets.ModelViewSet):
             obj, created = ForumVote.objects.get_or_create(pk=self.kwargs.get('pk'),
                                                            defaults={'forum_id': self.request.data['forum'],
                                                                      'user': self.request.user,
-                                                                     'vote': self.request.data['vote'],
-                                                                     'try_count': self.request.data['try_count']})
+                                                                     'vote': self.request.data['vote']})
             return obj
         else:
             return super(ForumVoteViewSet, self).get_object()
