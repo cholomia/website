@@ -163,7 +163,10 @@ class CommentVoteViewSet(viewsets.ModelViewSet):
 
     def get_object(self):
         if self.request.method == 'PUT':
-            obj, created = CommentVote.objects.get_or_create(pk=self.kwargs.get('pk'))
+            obj, created = CommentVote.objects.get_or_create(pk=self.kwargs.get('pk'),
+                                                             defaults={'comment_id': self.request.data['comment'],
+                                                                       'user': self.request.user,
+                                                                       'vote': self.request.data['vote']})
             return obj
         else:
             return super(CommentVoteViewSet, self).get_object()
