@@ -28,6 +28,8 @@ class Category(models.Model):
 class Lesson(models.Model):
     category = models.ForeignKey(Category, related_name='lessons', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
+    objective = models.TextField(blank=True, null=True)
+    summary = models.TextField(blank=True, null=True)
     sequence = models.IntegerField(unique=True)
     coverImage = models.FileField(blank=True, null=True)
     pdf = models.FileField()
