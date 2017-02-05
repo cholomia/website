@@ -34,7 +34,6 @@ class Lesson(models.Model):
     coverImage = models.FileField(blank=True, null=True)
     youtube_code = models.CharField(max_length=50, blank=True, null=True, default="")
     pdf = models.FileField()
-    page = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.id) + ": " + self.title
@@ -52,6 +51,7 @@ class Question(models.Model):
     lesson = models.ForeignKey(Lesson, related_name='questions', on_delete=models.CASCADE)
     body = models.TextField()
     answer = models.TextField()
+    page = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.id) + ": Lesson #" + str(self.lesson.id) + " " + self.body
