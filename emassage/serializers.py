@@ -6,7 +6,7 @@ from rest_framework import serializers
 from django.core.mail import send_mail
 
 from .models import Course, Category, Lesson, Question, Choice, Forum, Comment, Grade, ForumVote, \
-    CommentVote, VideoSimulation, UserProfile, TwistWord
+    CommentVote, VideoSimulation, UserProfile, TwistWord, Announcement, Gallery
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -176,4 +176,16 @@ class VideoSimulationSerializer(serializers.ModelSerializer):
 class TwistWordSerializer(serializers.ModelSerializer):
     class Meta:
         model = TwistWord
+        fields = '__all__'
+
+
+class AnnouncementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Announcement
+        fields = '__all__'
+
+
+class GallerySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Gallery
         fields = '__all__'

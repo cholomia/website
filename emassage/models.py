@@ -32,7 +32,9 @@ class Lesson(models.Model):
     summary = models.TextField(blank=True, null=True)
     sequence = models.IntegerField(unique=True)
     coverImage = models.FileField(blank=True, null=True)
+    youtube_code = models.CharField(max_length=50, blank=True, null=True, default="")
     pdf = models.FileField()
+    page = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.id) + ": " + self.title
@@ -146,3 +148,21 @@ class TwistWord(models.Model):
 
     def __str__(self):
         return self.word
+
+
+class Announcement(models.Model):
+    title = models.CharField(max_length=50)
+    description = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
+class Gallery(models.Model):
+    category = models.ForeignKey(Category, related_name='category_gallery', on_delete=models.CASCADE)
+    image = models.FileField()
+    description = models.TextField()
+
+    def __str__(self):
+        return self.description

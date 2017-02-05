@@ -8,10 +8,12 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Course, Comment, Forum, Grade, UserProfile, ForumVote, CommentVote, VideoSimulation, TwistWord
+from .models import Course, Comment, Forum, Grade, UserProfile, ForumVote, CommentVote, VideoSimulation, TwistWord, \
+    Category, Announcement, Gallery
 from .permissions import IsOwnerOrReadOnly
 from .serializers import CourseSerializer, UserSerializer, CommentSerializer, ForumSerializer, GradeSerializer, \
-    ForumVoteSerializer, CommentVoteSerializer, VideoSimulationSerializer, TwistWordSerializer
+    ForumVoteSerializer, CommentVoteSerializer, VideoSimulationSerializer, TwistWordSerializer, CategorySerializer, \
+    AnnouncementSerializer, GallerySerializer
 from rest_framework.filters import OrderingFilter
 
 
@@ -20,6 +22,13 @@ from rest_framework.filters import OrderingFilter
 class CourseViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+
+
+class CategoryList(APIView):
+    def get(self, request):
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
+        return Response(serializer.data)
 
 
 class CourseList(APIView):
@@ -185,3 +194,25 @@ class TwistWordViewSet(viewsets.ModelViewSet):
     queryset = TwistWord.objects.all()
     serializer_class = TwistWordSerializer
     pagination_class = None
+
+
+class AnnouncementViewSet(viewsets.ModelViewSet):
+    queryset = Announcement.objects.all()
+    serializer_class = AnnouncementSerializer
+    pagination_class = None
+
+
+class GalleryFilter(django_filters.rest_framework.FilterSet):
+    category_id = django_filters.NumberFilter(name="category__id")
+
+    class Meta:
+        model = Gallery
+        fields = ['category_id', ]
+
+
+class GalleryViewSet(viewsets.ModelViewSet):
+    queryset = Gallery.objects.all()
+    serializer_class = GallerySerializer
+    pagination_class = None
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = GalleryFilter
