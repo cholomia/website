@@ -16,7 +16,7 @@ class Term(models.Model):
     sequence = models.IntegerField()
 
     def __str__(self):
-        return self.title
+        return str(self.id) + ": " + self.title
 
 
 class Topic(models.Model):
@@ -26,6 +26,7 @@ class Topic(models.Model):
     description = models.CharField(max_length=1000)
     objective = models.CharField(max_length=1000)
     image = models.CharField(max_length=250, blank=True)
+    video = models.CharField(max_length=250, blank=True)
 
     def __str__(self):
         return self.title + " from " + self.term.title
@@ -64,6 +65,8 @@ class Question(models.Model):
     question = models.CharField(max_length=1000)
     answer = models.CharField(max_length=1000)
     question_type = models.ForeignKey(QuestionType, related_name='questiontype', on_delete=models.CASCADE)
+    lesson_detail = models.ForeignKey(LessonDetail, related_name='question_lesson_detail', on_delete=models.CASCADE,
+                                      null=True)
 
     def __str__(self):
         return "ID# " + str(self.id) + " Question for " + self.topic.title + ": " + self.question
@@ -79,9 +82,12 @@ class Choice(models.Model):
 
 
 class Assessment(models.Model):
+    term = models.ForeignKey(Term, related_name='termAssessment', on_delete=models.CASCADE, null=True)
     question = models.CharField(max_length=1000)
     answer = models.CharField(max_length=1000)
     question_type = models.ForeignKey(QuestionType, related_name='assessmenttype', on_delete=models.CASCADE)
+    lesson_detail = models.ForeignKey(LessonDetail, related_name='assessment_lesson_detail', on_delete=models.CASCADE,
+                                      null=True)
 
     def __str__(self):
         return "ID# " + str(self.id) + ": " + self.question
