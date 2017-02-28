@@ -6,7 +6,7 @@ from rest_framework import serializers
 from django.core.mail import send_mail
 
 from .models import Course, Category, Lesson, Question, Choice, Forum, Comment, Grade, ForumVote, \
-    CommentVote, VideoSimulation, UserProfile, TwistWord, Announcement, Gallery
+    CommentVote, VideoSimulation, UserProfile, TwistWord, Announcement, Gallery, LessonDetail
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -55,8 +55,15 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class LessonDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LessonDetail
+        fields = '__all__'
+
+
 class LessonSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True, read_only=True)
+    detail_lessons = LessonDetailSerializer(many=True, read_only=True)
 
     class Meta:
         model = Lesson

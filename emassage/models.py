@@ -32,11 +32,21 @@ class Lesson(models.Model):
     summary = models.TextField(blank=True, null=True)
     sequence = models.IntegerField(unique=True)
     coverImage = models.FileField(blank=True, null=True)
-    youtube_code = models.CharField(max_length=50, blank=True, null=True, default="")
+    video = models.FileField(blank=True, null=True)
     pdf = models.FileField()
 
     def __str__(self):
         return str(self.id) + ": " + self.title
+
+
+class LessonDetail(models.Model):
+    lesson = models.ForeignKey(Lesson, related_name="detail_lessons", on_delete=models.CASCADE)
+    sequence = models.IntegerField()
+    title = models.CharField(max_length=100)
+    body = models.TextField()
+
+    def __str__(self):
+        return self.lesson.title + ": " + self.title
 
 
 class MobileId(models.Model):
@@ -51,7 +61,7 @@ class Question(models.Model):
     lesson = models.ForeignKey(Lesson, related_name='questions', on_delete=models.CASCADE)
     body = models.TextField()
     answer = models.TextField()
-    page = models.IntegerField(default=0)
+    lesson_detail = models.ForeignKey(LessonDetail, related_name='question_lesson_detail', on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.id) + ": Lesson #" + str(self.lesson.id) + " " + self.body
