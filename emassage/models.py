@@ -33,7 +33,6 @@ class Lesson(models.Model):
     sequence = models.IntegerField(unique=True)
     coverImage = models.FileField(blank=True, null=True)
     video = models.FileField(blank=True, null=True)
-    pdf = models.FileField()
 
     def __str__(self):
         return str(self.id) + ": " + self.title
